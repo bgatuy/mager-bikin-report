@@ -2,7 +2,7 @@ const fileInput = document.getElementById('pdfFile');
 const output = document.getElementById('output');
 const copyBtn = document.getElementById('copyBtn');
 
-// Format tanggal ke: 17 Juni 2025
+// Format tanggal ke Indonesia
 function formatTanggalIndonesia(tanggal) {
   const bulan = [
     "Januari", "Februari", "Maret", "April", "Mei", "Juni",
@@ -12,16 +12,15 @@ function formatTanggalIndonesia(tanggal) {
   return `${dd} ${bulan[parseInt(mm) - 1]} ${yyyy}`;
 }
 
-// Potong hanya jam:menit
+// Ambil jam & potong jam:menit
 function potongJamMenit(waktu) {
   return waktu?.substring(0, 5) || '';
 }
 
-// Ambil blok data di antara label awal sampai sebelum label berikutnya
+// Ekstrak blok multi baris antar label
 function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
   const startIndex = lines.findIndex(line => line.toLowerCase().includes(startLabel.toLowerCase()));
   if (startIndex === -1) return '';
-
   let result = '';
   for (let i = startIndex + 1; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -30,15 +29,12 @@ function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
     if (isStop) break;
     result += ' ' + line;
   }
-  return result.replace(/\s+/g, ' ').trim();
+  return result.replace(/^:+/, '').replace(/\s+/g, ' ').trim();
 }
 
 fileInput.addEventListener('change', async function () {
   const file = fileInput.files[0];
-  if (!file || file.type !== 'application/pdf') {
-    alert('Silakan pilih file PDF yang valid.');
-    return;
-  }
+  if (!file || file.type !== 'application/pdf') return;
 
   const reader = new FileReader();
   reader.onload = async function () {
@@ -56,14 +52,8 @@ fileInput.addEventListener('change', async function () {
     const clean = (text) => text?.replace(/\s+/g, ' ').trim() || '';
     const lines = rawText.split('\n');
 
-    let unitKerja = extractFlexibleBlock(lines, 'Unit Kerja', ['Kantor Cabang', 'Tanggal']);
-let kantorCabang = extractFlexibleBlock(lines, 'Kantor Cabang', ['Tanggal', 'Pelapor']);
-
-// Hilangkan ":" di awal hasil jika ada
-unitKerja = unitKerja.replace(/^:+/, '').trim();
-kantorCabang = kantorCabang.replace(/^:+/, '').trim();
-
-
+    const unitKerja = extractFlexibleBlock(lines, 'Unit Kerja', ['Kantor Cabang', 'Tanggal']);
+    const kantorCabang = extractFlexibleBlock(lines, 'Kantor Cabang', ['Tanggal', 'Pelapor']);
     const tanggal = rawText.match(/Tanggal(?:\sTiket)?\s*:\s*(\d{2}\/\d{2}\/\d{4})/)?.[1];
     const tanggalFormatted = tanggal ? formatTanggalIndonesia(tanggal) : '';
 
@@ -74,12 +64,10 @@ kantorCabang = kantorCabang.replace(/^:+/, '').trim();
     const selesai = potongJamMenit(rawText.match(/Selesai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
 
     const solusi = clean(rawText.match(/Solusi\/Perbaikan\s*:\s*(.+)/)?.[1]);
-
     const jenisPerangkat = clean(rawText.match(/Jenis Perangkat\s*:\s*(.+)/)?.[1]);
     const serial = clean(rawText.match(/SN\s*:\s*(.+)/)?.[1]);
     const merk = clean(rawText.match(/Merk\s*:\s*(.+)/)?.[1]);
     const type = clean(rawText.match(/Type\s*:\s*(.+)/)?.[1]);
-
     const pic = clean(rawText.match(/Pelapor\s*:\s*([^\(]+)/)?.[1]);
     const status = clean(rawText.match(/STATUS PEKERJAAN\s*:\s*(.+)/)?.[1]);
 
@@ -114,12 +102,10 @@ Status : ${status}`;
   reader.readAsArrayBuffer(file);
 });
 
+// ✅ Copy tanpa notifikasi alert
 copyBtn.addEventListener('click', () => {
   const text = output.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert('Teks berhasil disalin!');
-  }).catch(err => {
-    alert('Gagal menyalin teks.');
-    console.error(err);
+  navigator.clipboard.writeText(text).catch(err => {
+    console.error('Gagal menyalin teks:', err);
   });
 });
