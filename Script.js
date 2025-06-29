@@ -30,9 +30,15 @@ function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
     result += ' ' + line;
   }
 
-  // Hapus karakter ":" di awal dan akhir jika ada
-  return result.replace(/^:+/, '').replace(/:+$/, '').replace(/\s+/g, ' ').trim();
+  // 🧽 Bersihkan tanda ":" di awal, akhir, dan tengah ganda
+  return result.replace(/^:+/, '')       // hapus ":" di awal
+               .replace(/:+$/, '')       // hapus ":" di akhir
+               .replace(/^:+\s*/, '')    // hapus ":" + spasi di awal
+               .replace(/\s*:+\s*/g, ' ') // ganti ":" di tengah jadi spasi
+               .replace(/\s+/g, ' ')     // rapikan spasi
+               .trim();
 }
+
 
 
 fileInput.addEventListener('change', async function () {
