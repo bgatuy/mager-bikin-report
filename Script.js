@@ -29,8 +29,11 @@ function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
     if (isStop) break;
     result += ' ' + line;
   }
-  return result.replace(/^:+/, '').replace(/\s+/g, ' ').trim();
+
+  // Hapus karakter ":" di awal dan akhir jika ada
+  return result.replace(/^:+/, '').replace(/:+$/, '').replace(/\s+/g, ' ').trim();
 }
+
 
 fileInput.addEventListener('change', async function () {
   const file = fileInput.files[0];
