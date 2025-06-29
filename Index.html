@@ -15,23 +15,23 @@
 
 <body>
 
- <h1>📄 Mager Bikin Laporan CM</h1>
-<h2>Upload Form PDF Kalian Disini!</h2>
+  <h1>
+    <span class="material-icons">assignment</span>
+    Mager Bikin Laporan CM
+  </h1>
+  <h2>Upload Form PDF Kalian Disini !</h2>
 
-<label for="pdfFile" class="upload-label">
-  <span class="material-icons">upload_file</span> Pilih File PDF
-</label>
-<input type="file" id="pdfFile" accept="application/pdf" />
+  <label for="pdfFile" class="upload-label">
+    <span class="material-icons">upload_file</span>
+    <span>Pilih File PDF</span>
+  </label>
+  <input type="file" id="pdfFile" accept="application/pdf" />
 
-  <div id="output">Hasil akan di ekstrak dan muncul di sini...</div>
+  <div id="output">Text akan muncul di sini...</div>
 
-<button id="copyBtn">Copy</button>
+  <button id="copyBtn">Copy</button>
 
-<!-- PDF.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-<!-- Gaya Ringan -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<script src="script.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

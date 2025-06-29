@@ -39,6 +39,7 @@ function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
                .trim();
 }
 
+
 fileInput.addEventListener('change', async function () {
   const file = fileInput.files[0];
   if (!file || file.type !== 'application/pdf') return;
