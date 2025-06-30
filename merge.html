@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Report CM Kanpus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Favicon ditambahkan di sini -->
+  <link rel="icon" href="https://api.iconify.design/mdi:file-document.svg" type="image/svg+xml" />
+
+  <!-- Style dan ikon -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav style="margin-bottom: 20px; text-align:center; color: #007bff;">
+    <a href="index.html" style="color: #007bff; text-decoration;">Extract PDF</a> |
+    <a href="merge.html" style="color: #007bff; text-decoration;">Merge PDF</a>
+  </nav>
+
+  <h1 style="text-align:center;">🔗 Merge PDF Kalian Disini</h1>
+  <h4 style="text-align:center;">Pilih File PDF Yang Ingin Kalian Gabung Menjadi Satu File !</h4>
+<br>
+
+  <div id="mergeContainer">
+    <label for="mergeInput" class="upload-label">
+      <span class="material-icons">picture_as_pdf</span> Pilih File PDF
+    </label>
+    <input type="file" id="mergeInput" accept="application/pdf" multiple style="margin-top:10px;">
+
+    <div id="fileList">Belum ada file dipilih.</div>
+
+    <button id="mergeBtn">Gasss Merge PDF</button>
+
+    <div id="downloadBar">✅ File PDF berhasil digabung dan sedang diunduh...</div>
+  </div>
+
+
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="script_merge.js"></script>
+</body>
+</html>

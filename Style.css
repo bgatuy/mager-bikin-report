@@ -1,0 +1,250 @@
+/* === RESET === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* === BASE === */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === HEADINGS === */
+h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+h2 {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* === UPLOAD LABEL === */
+.upload-label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  transition: background-color 0.2s ease-in-out;
+  margin-bottom: 15px;
+}
+
+.upload-label:hover {
+  background-color: #f0f0f0;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* === OUTPUT AREA === */
+#output {
+  white-space: pre-wrap;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  height: 400px;
+  width: 100%;
+  max-width: 800px;
+  overflow-y: auto;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* === BUTTON === */
+#copyBtn {
+  padding: 14px 24px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#copyBtn:hover {
+  background-color: #218838;
+}
+
+/* === DARK MODE OTOMATIS (BERDASARKAN TEMA SISTEM) === */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #f0f0f0;
+  }
+
+  h1, h2 {
+    color: #f0f0f0;
+  }
+
+  .upload-label {
+    background-color: #1e1e1e;
+    border-color: #555;
+    color: #f0f0f0;
+  }
+
+  .upload-label:hover {
+    background-color: #2a2a2a;
+  }
+
+  #output {
+    background-color: #1e1e1e;
+    border-color: #444;
+    color: #f0f0f0;
+  }
+
+  #copyBtn {
+    background-color: #00c853;
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  #output {
+    height: 300px;
+    font-size: 14px;
+  }
+
+  #copyBtn {
+    width: 100%;
+    font-size: 15px;
+  }
+}
+
+ body {
+      font-family: Segoe UI';
+      margin: 0;
+      padding: 50px;
+      background: #f9f9f9;
+      color: #222;
+    }
+
+    #mergeContainer {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    #mergeInput {
+      margin: 10px 0;
+    }
+
+    #mergeBtn {
+      background-color: #28a745;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    #mergeBtn:hover {
+      background-color: #218838;
+    }
+
+    #fileList {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    #downloadBar {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e0ffe0;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      border-radius: 5px;
+      display: none;
+    }
+
+    nav {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #007bff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #f0f0f0;
+      }
+
+      #mergeContainer {
+        background: #1e1e1e;
+        border-color: #444;
+      }
+
+      #mergeBtn {
+        background-color: #00c853;
+      }
+
+      #fileList, nav a {
+        color: #f0f0f0;
+      }
+
+      #downloadBar {
+        background-color: #2e7d32;
+        color: #d0ffd0;
+        border-color: #4caf50;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 15px 10px;
+      }
+
+      #mergeContainer {
+        padding: 15px;
+      }
+
+      #mergeBtn {
+        font-size: 16px;
+      }
+    }
