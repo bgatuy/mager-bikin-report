@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>BRIBOX KANPUS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <a href="index.html">Trackmate</a>
+    <a href="Appsheet.html">AppSheet</a>
+    <a href="formserahterima.html">Form Serah Terima</a>
+    <a href="merge.html">Merge PDF</a>
+  </nav>
+
+  <h1 style="text-align:center;">🔗 Merge PDF</h1>
+  <h4 style="text-align:center;">Gabungkan PDF Kalian !</h4>
+<br>
+
+  <div id="mergeContainer">
+    <label for="mergeInput" class="upload-label">
+      <span class="material-icons">picture_as_pdf</span> Pilih File PDF
+    </label>
+    <input type="file" id="mergeInput" accept="application/pdf" multiple style="margin-top:10px;">
+
+    <div id="fileList">Belum ada file dipilih.</div>
+<br>
+    <button id="mergeBtn">Gasss Merge PDF</button>
+
+    <div id="downloadBar">✅ File PDF berhasil digabung dan sedang diunduh...</div>
+  </div>
+
+
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="script_merge.js"></script>
+</body>
+</html>

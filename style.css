@@ -1,0 +1,606 @@
+/* === RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === BASE STYLE === */
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #f4f6f8;
+  color: #222;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* NAVIGATION RESPONSIVE (agar tidak turun di HP) */
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+nav a {
+  display: inline-block;
+  padding: 10px 10px;
+  border: 1px solid #2196f3;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #2196f3;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #2196f3;
+  color: white;
+}
+
+
+/* === HEADINGS === */
+h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 22px;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* === FILE INPUT === */
+.upload-label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+}
+
+.upload-label:hover {
+  background-color: #2196f3; /* Biru muda saat hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Efek sentuh/tap (mobile) */
+.upload-label:active {
+  background-color: #2196f3;
+  transform: scale(0.98);
+}
+
+
+input[type="file"] {
+  display: none;
+}
+
+
+/* === OUTPUT AREA === */
+#output {
+  white-space: pre-wrap;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #ffffff;
+  color: #222;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  height: 400px;
+  overflow-y: auto;
+  font-size: 15px;
+  line-height: 1.6;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* === COPY BUTTON === */
+#copyBtn {
+  padding: 14px 24px;
+  background-color: #00c853;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#copyBtn:hover {
+  background-color: #00b248;
+}
+
+/* === DARK MODE === */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #f0f0f0;
+  }
+
+  h1, h2 {
+    color: #f0f0f0;
+  }
+
+  .upload-label {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    border-color: #444;
+  }
+
+  .upload-label:hover {
+    background-color: #2d3a4a;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+  }
+
+  .upload-label:active {
+    background-color: #1f2c3a;
+    transform: scale(0.98);
+  }
+
+  #output {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    border-color: #444;
+  }
+
+  #copyBtn {
+    background-color: #00c853;
+  }
+
+ /* DARK MODE NAV LINK */
+  nav a {
+    background-color: #1e1e1e;
+    border-color: #2196f3;
+    color: #2196f3;
+  }
+
+  nav a:hover {
+    background-color: #2196f3;
+    color: #121212;
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #output {
+    height: 300px;
+    font-size: 14px;
+  }
+
+  #copyBtn {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  nav {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #f0f0f0;
+      }
+
+      #mergeContainer {
+        background: #1e1e1e;
+        border-color: #444;
+      }
+
+      #mergeBtn {
+        background-color: #00c853;
+      }
+
+      #fileList, nav a {
+        color: #f0f0f0;
+      }
+
+      #downloadBar {
+        background-color: #2e7d32;
+        color: #d0ffd0;
+        border-color: #4caf50;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 15px 10px;
+      }
+
+      #mergeContainer {
+        padding: 15px;
+      }
+
+      #mergeBtn {
+        font-size: 16px;
+      }
+    }
+  
+/* Form Container */
+.form-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: 3vh auto; /* agar lebih ke atas */
+  text-align: center;
+}
+
+/* Judul Form */
+.form-box h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Grouping untuk label + input di 1 baris */
+.input-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+/* Input Date Styling */
+input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 180px;
+}
+
+/* Upload Button */
+.custom-file-label {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#pdfInput {
+  display: none;
+}
+
+/* File info next to upload button */
+#fileInfo {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #444;
+  display: inline-block;
+}
+
+/* Proses & Download Buttons */
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+button {
+  background-color: #00c853;
+  color: white;
+  padding: 10px 25px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #00c853;
+}
+
+/* Loading animation */
+#loading {
+  margin-top: 10px;
+  display: none;
+  font-weight: bold;
+  color: #333;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #333;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Preview Table Section */
+#judulHasil {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+#previewTable, #ttdTable {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 90%;
+}
+
+#previewTable th, #previewTable td,
+#ttdTable th, #ttdTable td {
+  border: 1px solid black;
+  padding: 8px;
+  font-size: 12px;
+  text-align: center;
+}
+
+#ttdTable td {
+  height: 50px;
+}
+
+/* Default (Light Mode) */
+body {
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+}
+
+.form-box {
+  background-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+input, button {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #ccc;
+}
+
+.upload-label {
+  background-color: #fff;
+  color: #1a1a1a;
+  border-color: #ccc;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th {
+  background-color: #eee;
+  color: #1a1a1a;
+}
+
+#loading {
+  color: #333;
+}
+
+.spinner {
+  border-top: 3px solid #333;
+}
+
+/* File info default (light) */
+#fileInfo {
+  color: #1a1a1a;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#fileInfo i {
+  color: #1a1a1a;
+}
+
+/* Ikon kalender tetap gelap di lightmode */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+}
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #f5f5f5;
+  }
+
+  .form-box {
+    background-color: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  }
+
+  input, button {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+    border: 1px solid #555;
+  }
+
+  .upload-label {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+    border-color: #555;
+  }
+
+  table, th, td {
+    border: 1px solid #555;
+  }
+
+  th {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+  }
+
+  #loading {
+    color: #ccc;
+  }
+
+  .spinner {
+    border-top: 3px solid #f5f5f5;
+  }
+
+  button {
+    background-color: #00c853;
+    color: white;
+    border: none;
+  }
+
+  button:hover {
+    background-color: #00c853;
+  }
+
+  #downloadBtn {
+    background-color: #00c853;
+    color: white;
+  }
+
+  /* File info for dark mode */
+  #fileInfo {
+    color: #f5f5f5;
+  }
+
+  #fileInfo i {
+    color: #f5f5f5;
+  }
+
+  /* Ikon kalender putih di dark mode */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
+/* Warna hijau untuk tombol proses dan download (global untuk light & dark) */
+button,
+#downloadBtn {
+  background-color: #00c853;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover,
+#downloadBtn:hover {
+  background-color: #00b248;
+}
+
+body {
+      font-family: Segoe UI; 
+      margin: 0;
+      padding: 50px;
+      background: #f9f9f9;
+      color: #222;
+    }
+  
+    
+    #mergeContainer {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin: center;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+  #mergeInput {
+      margin: 10px 0;
+    }
+
+   #mergeBtn {
+  background-color: #00c853;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+#mergeBtn:hover {
+  background-color: #00b248;
+}
+
+    #fileList {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    #downloadBar {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e0ffe0;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      border-radius: 5px;
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #f0f0f0;
+      }
+    
+      #mergeContainer {
+        background: #1e1e1e;
+        border-color: #444;
+      }
+
+      #mergeBtn {
+        background-color: #00c853;
+      }
+    }

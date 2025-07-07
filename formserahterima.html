@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIBOX KANPUS</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">Trackmate</a>
+    <a href="Appsheet.html">AppSheet</a>
+    <a href="formserahterima.html">Form Serah Terima</a>
+    <a href="merge.html">Merge PDF</a>
+  </nav>
+ 
+  <div class="container">
+    <div class="form-box">
+  <h1>Form Tanda Terima CM</h1>
+
+  <div class="input-group">
+    <label for="tanggalSerah">Input Tanggal Serah Terima:</label>
+    <input type="date" id="tanggalSerah">
+  </div>
+
+  <label for="pdfInput" class="upload-label">
+    <span class="material-icons">picture_as_pdf</span> Pilih File PDF
+    </label>
+    <input type="file" id="pdfInput" accept="application/pdf" multiple>
+    <span id="fileInfo" style="display: none;">
+  <i class="fas fa-folder-open" style="margin-right: 4px;"></i> 
+  <span id="fileCountText"></span>
+</span>
+
+  <div class="btn-wrapper">
+    <button onclick="prosesPDF()">Proses</button>
+    <button onclick="downloadPDF()" id="downloadBtn" style="display:none;">Download PDF</button>
+  </div>
+
+  <div id="loading">Memproses file <span class="spinner"></span></div>
+</div>
+
+    <div id="hasilContainer" class="hasil" style="display:none;">
+      <h3 id="judulHasil">FORM TANDA TERIMA CM</h3>
+      <table id="previewTable">
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>TANGGAL SERAH TERIMA</th>
+            <th>NAMA UKER</th>
+            <th>TANGGAL PEKERJAAN</th>
+          </tr>
+        </thead>
+        <tbody id="tabelData"></tbody>
+      </table>
+
+      <table id="ttdTable">
+        <thead>
+          <tr>
+            <th>TTD TEKNISI</th>
+            <th>TTD LEADER</th>
+            <th>TTD CALL CENTER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="height: 60px;"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="formserahterima.js"></script>
+</body>
+</html>

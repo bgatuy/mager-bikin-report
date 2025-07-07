@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>BRIBOX KANPUS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+   <nav>
+    <a href="index.html">Trackmate</a>
+    <a href="Appsheet.html">AppSheet</a>
+    <a href="formserahterima.html">Form Serah Terima</a>
+    <a href="merge.html">Merge PDF</a>
+  </nav>
+  
+
+  <h1>
+    <span class="material-icons">assignment</span>
+    Mager Report CM Trackmate
+  </h1>
+  <h2>Upload Form PDF Kalian Disini!</h2>
+
+  <label for="pdfFile" class="upload-label">
+  <span class="material-icons">picture_as_pdf</span> Pilih File PDF
+</label>
+<input type="file" id="pdfFile" accept="application/pdf" />
+<br>
+  <div id="output">Text akan muncul di sini...</div>
+  <button id="copyBtn">Copy</button>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="script_extract.js"></script>
+
+</body>
+</html>
