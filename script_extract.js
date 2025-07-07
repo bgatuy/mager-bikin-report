@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0ba0ee0942cc35003a56f3ee2c23f9ac6ee4b1a0
 const fileInput = document.getElementById('pdfFile');
 const output = document.getElementById('output');
 const copyBtn = document.getElementById('copyBtn');
@@ -102,6 +106,7 @@ Status : ${status}`;
   reader.readAsArrayBuffer(file);
 });
 
+<<<<<<< HEAD
 // Tombol copy
 copyBtn.addEventListener("click", () => {
   const textarea = document.createElement("textarea");
@@ -113,3 +118,8 @@ copyBtn.addEventListener("click", () => {
   copyBtn.textContent = "✔ Copied!";
   setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
 });
+=======
+copyBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText(output.textContent || '').catch(console.error);
+});
+>>>>>>> 0ba0ee0942cc35003a56f3ee2c23f9ac6ee4b1a0

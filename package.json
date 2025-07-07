@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "name": "report-cm",
   "version": "1.0.0",
   "main": "Appsheet.js",
+=======
+  "name": "percobaan",
+  "version": "1.0.0",
+  "main": "script_extract.js",
+>>>>>>> 0ba0ee0942cc35003a56f3ee2c23f9ac6ee4b1a0
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
