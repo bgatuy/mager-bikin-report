@@ -450,7 +450,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (prefers-color-scheme: dark) {
   body {
     background-color: #121212;
-    color: #f5f5f5;
+    color: #f0f0f0;
   }
 
   .form-box {
