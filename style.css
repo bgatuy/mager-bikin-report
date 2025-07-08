@@ -110,7 +110,7 @@ input[type="file"] {
   overflow-y: auto;
   font-size: 12px;
   line-height: 1.6;
-  width: 120%;
+  width: 110%;
   max-width: 800px;
   margin-bottom: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
