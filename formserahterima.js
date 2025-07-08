@@ -100,7 +100,7 @@ function downloadPDF() {
 
     doc.setFontSize(25);
     doc.setFont(undefined, "bold");
-    doc.text("FORM TANDA TERIMA CM", 105, 20, { align: "center" });
+    doc.text("FORM TANDA TERIMA CM", 105, 25, { align: "center" });
 
     doc.autoTable({
       head: [['NO.', 'TANGGAL SERAH TERIMA', 'NAMA UKER', 'TANGGAL PEKERJAAN']],
