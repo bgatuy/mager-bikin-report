@@ -119,7 +119,7 @@ function downloadPDF() {
         halign: "center",
         valign: "middle",
         lineColor: [0, 0, 0],
-        lineWidth: 0.1,
+        lineWidth: 0.3,
         textColor: [0, 0, 0]
       },
       headStyles: {
@@ -146,7 +146,7 @@ function downloadPDF() {
         halign: "center",
         valign: "middle",
         lineColor: [0, 0, 0],
-        lineWidth: 0.1,
+        lineWidth: 0.3,
         textColor: [0, 0, 0]
       },
       headStyles: {
