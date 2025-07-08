@@ -1,6 +1,24 @@
 const pdfInput = document.getElementById("pdfFile");
 const output = document.getElementById("output");
 const copyBtn = document.getElementById("copyBtn");
+const lokasiSelect = document.getElementById("inputLokasi");
+
+let lokasiTerpilih = "";
+let unitKerja = "-";
+let kantor = "-";
+let tanggal = "-";
+let problem = "-";
+let berangkat = "-";
+let tiba = "-";
+let mulai = "-";
+let selesai = "-";
+let progress = "-";
+let jenis = "-";
+let sn = "-";
+let merk = "-";
+let tipe = "-";
+let pic = "-";
+let status = "-";
 
 // Format tanggal dari 03/03/2025 → 03 Maret 2025
 function formatTanggalIndo(tanggalStr) {
@@ -22,80 +40,12 @@ function cleanJam(text) {
   return match ? match[0].replace(/\./g, ":") : "-";
 }
 
-pdfInput.addEventListener("change", async () => {
-  const file = pdfInput.files[0];
-  if (!file) return;
+function generateLaporan() {
+  const unitKerjaLengkap = (lokasiTerpilih && unitKerja !== "-") ? `${unitKerja} (${lokasiTerpilih})` : unitKerja;
 
-  const buffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  const laporanBaru = `Selamat Pagi/Siang/Sore Petugas Call Center, Update Pekerjaan
 
-  let rawText = "";
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    rawText += content.items.map(i => i.str).join(" ") + "\n";
-  }
-
-  // Bersihkan spasi ganda
-  rawText = rawText.replace(/\s+/g, " ").trim();
-
-  // Ambil data sesuai label
-  const unitKerja = ambil(rawText, /Unit Kerja\s*:\s*(.+?)\s+(Perangkat|Kantor Cabang)/);
-  const kantor = ambil(rawText, /Kantor Cabang\s*:\s*(.+?)\s+(Tanggal|Asset ID|Tanggal\/Jam)/);
-  const tglRaw = ambil(rawText, /Tanggal\/Jam\s*:\s*(\d{2}\/\d{2}\/\d{4})/);
-  const tanggal = tglRaw !== "-" ? formatTanggalIndo(tglRaw) : "-";
-
-  let problem = ambil(rawText, /Trouble Dilaporkan\s*:\s*(.+?)\s+(Solusi|Progress|KETERANGAN)/i);
-  if (problem === "-") problem = ambil(rawText, /Problem\s*[:\-]?\s*(.+?)\s+(Solusi|Progress|KETERANGAN)/i);
-
-  const berangkat = cleanJam(ambil(rawText, /BERANGKAT\s+(\d{2}[.:]\d{2})/));
-  const tiba = cleanJam(ambil(rawText, /TIBA\s+(\d{2}[.:]\d{2})/));
-  const mulai = cleanJam(ambil(rawText, /MULAI\s+(\d{2}[.:]\d{2})/));
-  const selesai = cleanJam(ambil(rawText, /SELESAI\s+(\d{2}[.:]\d{2})/));
-
-  const progress = ambil(rawText, /Solusi\s*\/?\s*Perbaikan\s*:\s*(.+?)\s+(KETERANGAN|Status|$)/i);
-  // Jenis perangkat (lebih toleran)
-const jenis = ambil(rawText, /Perangkat\s*[:\-]?\s*(Notebook Highend|PC|Printer|.+?)\s+(Kantor Cabang|SN|Asset ID)/i);
-
-// SN: huruf dan angka
-const sn = ambil(rawText, /SN\s*[:\-]?\s*([A-Za-z0-9\-]+)/i);
-
-// Type: fleksibel
-let tipe = ambil(rawText, /Type\s*[:\-]?\s*([A-Za-z0-9\s\-]+?)(?=\s+(SN|PW|Status|PIC|$))/i);
-
-// Merk: prioritas berdiri sendiri, fallback kalau gabung sama Type
-let merk = ambil(rawText, /Merk\s*[:\-]?\s*([A-Za-z]+)/i);
-
-// ⛑ Fallback jika "Merk" & "Type" digabung (e.g., "Merk : LENOVO Type : THINKPAD L13")
-if (merk === "-" && tipe !== "-") {
-  const matchGabung = rawText.match(/Merk\s*[:\-]?\s*([A-Za-z]+)\s+Type\s*[:\-]?\s*([A-Za-z0-9\s\-]+)/i);
-  if (matchGabung) {
-    merk = matchGabung[1].trim();
-    tipe = matchGabung[2].trim();
-  }
-}
-
-// 🔍 Auto detect merk dari type kalau merk masih kosong
-if ((merk === "-" || !merk) && tipe !== "-") {
-  const tipeUpper = tipe.toUpperCase();
-  if (tipeUpper.includes("THINKPAD") || tipeUpper.includes("LENOVO")) merk = "LENOVO";
-  else if (tipeUpper.includes("DELL")) merk = "DELL";
-  else if (tipeUpper.includes("HP")) merk = "HP";
-  else if (tipeUpper.includes("ASUS") || tipeUpper.includes("EXPERTBOOK")) merk = "ASUS";
-  else if (tipeUpper.includes("ACER")) merk = "ACER";
-  else if (tipeUpper.includes("AXIOO")) merk = "AXIOO";
-  else if (tipeUpper.includes("MSI")) merk = "MSI";
-  else if (tipeUpper.includes("ZYREX")) merk = "ZYREX";
-}
-
-  let pic = ambil(rawText, /Pelapor\s*:\s*(.+?)\s+(Type|Status|$)/);
-  if (pic.includes("(")) pic = pic.split("(")[0].trim();
-
-  const status = ambil(rawText, /Status Pekerjaan\s*:?\s*(Done|Pending|On\s?Progress)/i);
-
-  const laporan = `Selamat Pagi/Siang/Sore Petugas Call Center, Update Pekerjaan
-
-Unit Kerja : ${unitKerja}
+Unit Kerja : ${unitKerjaLengkap}
 Kantor Cabang : ${kantor}
 
 Tanggal : ${tanggal}
@@ -117,10 +67,79 @@ Type Perangkat : ${tipe}
 PIC : ${pic}
 Status : ${status}`;
 
-  output.textContent = laporan;
+  output.textContent = laporanBaru;
+}
+
+lokasiSelect.addEventListener("change", () => {
+  lokasiTerpilih = lokasiSelect.value;
+  generateLaporan();
 });
 
-// Tombol copy
+pdfInput.addEventListener("change", async () => {
+  const file = pdfInput.files[0];
+  if (!file) return;
+
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+
+  let rawText = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    rawText += content.items.map(i => i.str).join(" ") + "\n";
+  }
+
+  rawText = rawText.replace(/\s+/g, " ").trim();
+
+  unitKerja = ambil(rawText, /Unit Kerja\s*:\s*(.+?)\s+(Perangkat|Kantor Cabang)/);
+  kantor = ambil(rawText, /Kantor Cabang\s*:\s*(.+?)\s+(Tanggal|Asset ID|Tanggal\/Jam)/);
+  const tglRaw = ambil(rawText, /Tanggal\/Jam\s*:\s*(\d{2}\/\d{2}\/\d{4})/);
+  tanggal = tglRaw !== "-" ? formatTanggalIndo(tglRaw) : "-";
+
+  problem = ambil(rawText, /Trouble Dilaporkan\s*:\s*(.+?)\s+(Solusi|Progress|KETERANGAN)/i);
+  if (problem === "-") problem = ambil(rawText, /Problem\s*[:\-]?\s*(.+?)\s+(Solusi|Progress|KETERANGAN)/i);
+
+  berangkat = cleanJam(ambil(rawText, /BERANGKAT\s+(\d{2}[.:]\d{2})/));
+  tiba = cleanJam(ambil(rawText, /TIBA\s+(\d{2}[.:]\d{2})/));
+  mulai = cleanJam(ambil(rawText, /MULAI\s+(\d{2}[.:]\d{2})/));
+  selesai = cleanJam(ambil(rawText, /SELESAI\s+(\d{2}[.:]\d{2})/));
+
+  progress = ambil(rawText, /Solusi\s*\/?\s*Perbaikan\s*:\s*(.+?)\s+(KETERANGAN|Status|$)/i);
+  jenis = ambil(rawText, /Perangkat\s*[:\-]?\s*(Notebook Highend|PC|Printer|.+?)\s+(Kantor Cabang|SN|Asset ID)/i);
+  sn = ambil(rawText, /SN\s*[:\-]?\s*([A-Za-z0-9\-]+)/i);
+  tipe = ambil(rawText, /Type\s*[:\-]?\s*([A-Za-z0-9\s\-]+?)(?=\s+(SN|PW|Status|PIC|$))/i);
+  merk = ambil(rawText, /Merk\s*[:\-]?\s*([A-Za-z]+)/i);
+
+  // Fallback gabungan Merk + Type
+  if (merk === "-" && tipe !== "-") {
+    const matchGabung = rawText.match(/Merk\s*[:\-]?\s*([A-Za-z]+)\s+Type\s*[:\-]?\s*([A-Za-z0-9\s\-]+)/i);
+    if (matchGabung) {
+      merk = matchGabung[1].trim();
+      tipe = matchGabung[2].trim();
+    }
+  }
+
+  // Auto detect merk dari tipe
+  if ((merk === "-" || !merk) && tipe !== "-") {
+    const tipeUpper = tipe.toUpperCase();
+    if (tipeUpper.includes("THINKPAD") || tipeUpper.includes("LENOVO")) merk = "LENOVO";
+    else if (tipeUpper.includes("DELL")) merk = "DELL";
+    else if (tipeUpper.includes("HP")) merk = "HP";
+    else if (tipeUpper.includes("ASUS") || tipeUpper.includes("EXPERTBOOK")) merk = "ASUS";
+    else if (tipeUpper.includes("ACER")) merk = "ACER";
+    else if (tipeUpper.includes("AXIOO")) merk = "AXIOO";
+    else if (tipeUpper.includes("MSI")) merk = "MSI";
+    else if (tipeUpper.includes("ZYREX")) merk = "ZYREX";
+  }
+
+  pic = ambil(rawText, /Pelapor\s*:\s*(.+?)\s+(Type|Status|$)/);
+  if (pic.includes("(")) pic = pic.split("(")[0].trim();
+
+  status = ambil(rawText, /Status Pekerjaan\s*:?\s*(Done|Pending|On\s?Progress)/i);
+
+  generateLaporan();
+});
+
 copyBtn.addEventListener("click", () => {
   const textarea = document.createElement("textarea");
   textarea.value = output.textContent;

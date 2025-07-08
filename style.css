@@ -276,14 +276,15 @@ input[type="file"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   flex-wrap: wrap;
   margin-bottom: 15px;
 }
 
 /* Input Date Styling */
 input[type="date"] {
-  padding: 8px 12px;
+  padding: 6px 8px;
+  text-align: center; 
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
@@ -604,3 +605,57 @@ body {
         background-color: #00c853;
       }
     }
+
+   /* === Layout label + dropdown horizontal === */
+.lokasi-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+/* === Light mode default === */
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+label {
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+select {
+  font-size: 12px;
+  padding: 6px 8px;
+  text-align: left; 
+  text-align-last: center; /* penting untuk center teks yang dipilih */
+  width: 150px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+
+  max-height: 220px;   /* tampil 10 item */
+  overflow-y: auto;
+}
+
+/* === Dark mode auto === */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  label {
+    color: #dddddd;
+  }
+
+  select {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 1px solid #444444;
+  }
+}

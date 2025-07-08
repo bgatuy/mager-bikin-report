@@ -1,6 +1,7 @@
 const fileInput = document.getElementById('pdfFile');
 const output = document.getElementById('output');
 const copyBtn = document.getElementById('copyBtn');
+const lokasiSelect = document.getElementById('inputLokasi');
 
 function formatTanggalIndonesia(tanggal) {
   const bulan = [
@@ -29,7 +30,25 @@ function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
   return result.replace(/^:+/, '').replace(/:+$/, '').replace(/^:+\s*/, '').replace(/\s*:+\s*/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-let lastExtractedText = "";
+let unitKerja = "-";
+let kantorCabang = "-";
+let tanggalFormatted = "-";
+let problem = "-";
+let berangkat = "-";
+let tiba = "-";
+let mulai = "-";
+let selesai = "-";
+let solusi = "-";
+let jenisPerangkat = "-";
+let serial = "-";
+let merk = "-";
+let type = "-";
+let pic = "-";
+let status = "-";
+
+lokasiSelect.addEventListener("change", () => {
+  updateOutput();
+});
 
 fileInput.addEventListener('change', async function () {
   const file = fileInput.files[0];
@@ -51,29 +70,35 @@ fileInput.addEventListener('change', async function () {
     const clean = (text) => text?.replace(/\s+/g, ' ').trim() || '';
     const lines = rawText.split('\n');
 
-    const unitKerja = extractFlexibleBlock(lines, 'Unit Kerja', ['Kantor Cabang', 'Tanggal']);
-    const kantorCabang = extractFlexibleBlock(lines, 'Kantor Cabang', ['Tanggal', 'Pelapor']);
+    unitKerja = extractFlexibleBlock(lines, 'Unit Kerja', ['Kantor Cabang', 'Tanggal']);
+    kantorCabang = extractFlexibleBlock(lines, 'Kantor Cabang', ['Tanggal', 'Pelapor']);
     const tanggal = rawText.match(/Tanggal(?:\sTiket)?\s*:\s*(\d{2}\/\d{2}\/\d{4})/)?.[1];
-    const tanggalFormatted = tanggal ? formatTanggalIndonesia(tanggal) : '';
+    tanggalFormatted = tanggal ? formatTanggalIndonesia(tanggal) : '';
+    problem = clean(rawText.match(/Trouble Dilaporkan\s*:\s*(.+)/)?.[1]);
+    berangkat = potongJamMenit(rawText.match(/Berangkat\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
+    tiba = potongJamMenit(rawText.match(/Tiba\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
+    mulai = potongJamMenit(rawText.match(/Mulai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
+    selesai = potongJamMenit(rawText.match(/Selesai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
+    solusi = clean(rawText.match(/Solusi\/Perbaikan\s*:\s*(.+)/)?.[1]);
+    jenisPerangkat = clean(rawText.match(/Jenis Perangkat\s*:\s*(.+)/)?.[1]);
+    serial = clean(rawText.match(/SN\s*:\s*(.+)/)?.[1]);
+    merk = clean(rawText.match(/Merk\s*:\s*(.+)/)?.[1]);
+    type = clean(rawText.match(/Type\s*:\s*(.+)/)?.[1]);
+    pic = clean(rawText.match(/Pelapor\s*:\s*([^\(]+)/)?.[1]);
+    status = clean(rawText.match(/STATUS PEKERJAAN\s*:\s*(.+)/)?.[1]);
 
-    const problem = clean(rawText.match(/Trouble Dilaporkan\s*:\s*(.+)/)?.[1]);
-    const berangkat = potongJamMenit(rawText.match(/Berangkat\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
-    const tiba = potongJamMenit(rawText.match(/Tiba\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
-    const mulai = potongJamMenit(rawText.match(/Mulai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
-    const selesai = potongJamMenit(rawText.match(/Selesai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
+    updateOutput();
+  };
+  reader.readAsArrayBuffer(file);
+});
 
-    const solusi = clean(rawText.match(/Solusi\/Perbaikan\s*:\s*(.+)/)?.[1]);
-    const jenisPerangkat = clean(rawText.match(/Jenis Perangkat\s*:\s*(.+)/)?.[1]);
-    const serial = clean(rawText.match(/SN\s*:\s*(.+)/)?.[1]);
-    const merk = clean(rawText.match(/Merk\s*:\s*(.+)/)?.[1]);
-    const type = clean(rawText.match(/Type\s*:\s*(.+)/)?.[1]);
-    const pic = clean(rawText.match(/Pelapor\s*:\s*([^\(]+)/)?.[1]);
-    const status = clean(rawText.match(/STATUS PEKERJAAN\s*:\s*(.+)/)?.[1]);
+function updateOutput() {
+  const lokasiTerpilih = lokasiSelect.value;
+  const unitKerjaLengkap = (lokasiTerpilih && unitKerja !== '-') ? `${unitKerja} (${lokasiTerpilih})` : unitKerja;
 
-    const finalOutput =
-`Selamat Pagi/Siang/Sore Petugas Call Center, Update Pekerjaan
+  const finalOutput = `Selamat Pagi/Siang/Sore Petugas Call Center, Update Pekerjaan
 
-Unit Kerja : ${unitKerja}
+Unit Kerja : ${unitKerjaLengkap}
 Kantor Cabang : ${kantorCabang}
 
 Tanggal : ${tanggalFormatted}
@@ -95,14 +120,9 @@ Type Perangkat : ${type}
 PIC : ${pic}
 Status : ${status}`;
 
-    lastExtractedText = finalOutput;
-    output.textContent = finalOutput;
-  };
+  output.textContent = finalOutput;
+}
 
-  reader.readAsArrayBuffer(file);
-});
-
-// Tombol copy
 copyBtn.addEventListener("click", () => {
   const textarea = document.createElement("textarea");
   textarea.value = output.textContent;
