@@ -80,8 +80,7 @@ h2 {
 }
 
 .upload-label:hover {
-  background-color: #2196f3;
-  /* Biru muda saat hover */
+  background-color: #2196f3; /* Biru muda saat hover */
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -109,9 +108,9 @@ input[type="file"] {
   border-radius: 10px;
   height: 400px;
   overflow-y: auto;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1.6;
-  width: 100%;
+  width: 120%;
   max-width: 800px;
   margin-bottom: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
@@ -264,8 +263,7 @@ input[type="file"] {
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   max-width: 600px;
-  margin: 3vh auto;
-  /* agar lebih ke atas */
+  margin: 2vh auto; /* agar lebih ke atas */
   text-align: center;
 }
 
@@ -557,7 +555,7 @@ button:hover,
 body {
   font-family: Segoe UI;
   margin: 0;
-  padding: 50px;
+  padding: 30px;
   background: #f9f9f9;
   color: #222;
 }
@@ -570,7 +568,7 @@ body {
   border-radius: 10px;
   width: 300px;
   text-align: center;
-  margin: 3vh auto;
+  margin: 2vh auto;
   /* agar lebih ke atas */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
