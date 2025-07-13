@@ -657,10 +657,6 @@ select {
     font-size: 14px;
   }
 
-  input[type="date"] {
-    flex-direction: column;
-  }
-
  #fileList {
   width: 100%;
   max-width: 100%;
