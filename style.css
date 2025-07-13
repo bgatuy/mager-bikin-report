@@ -1,0 +1,721 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Cegah flash menu saat kembali dari back (bfcache) */
+html.restore-menu-fix #mainNav {
+  display: none !important;
+}
+
+/* === CONTENT BOX WRAPPER === */
+.content-box {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  max-width: 700px;
+  margin: 50px auto;
+  border: 3px solid #ccc;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .content-box {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border: 3px solid #444;
+}
+
+/* === BASE NAV STYLE === */
+#menuToggle {
+    display: block;
+    position: fixed;
+    top: 25px;
+    left: 30px;
+    z-index: 1000;
+    background: none;
+    color: #333333;
+    padding: 8px 8px;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    font-size: 18px;
+  }
+
+  body.dark-mode #menuToggle {
+    color: #ccc;
+    border-color: #ccc;
+  }
+#mainNav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background-color: #ccc;
+  font-weight: bold;
+  flex-wrap: wrap;
+}
+
+/* === LINK STYLE === */
+#mainNav a {
+  text-decoration: none;
+  color: #0077cc;
+  padding: 8px 12px;
+  text-align: center;
+  border-radius: 6px;
+  transition: border 0.3s ease;
+}
+
+/** === HEADINGS === */
+h1 {
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  gap: 10px;
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+/** === FILE INPUT === */
+.upload-label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+
+.upload-label:active {
+  background-color: #0077cc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  color: white;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/** === OUTPUT AREA === */
+#output {
+  white-space: pre-wrap;
+  text-align: left; /* Isi teks tetap rata kiri */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  height: 200px;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 1.6;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 20px; /* <-- Ini yang bikin dia center */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/** === COPY BUTTON === */
+#copyBtn {
+  padding: 14px 24px;
+  background-color: #00c853;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#copyBtn:active {
+  background-color: #00b248;
+}
+
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark,
+body.dark-mode {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+
+body.dark #output,
+body.dark-mode #output {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-color: #444;
+}
+
+body.dark input,
+body.dark select,
+body.dark button,
+body.dark .upload-label,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode button,
+body.dark-mode .upload-label {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border-color: #555;
+}
+
+/** === TOGGLE BUTTON === */
+#toggleModeBtn {
+  position: fixed;
+  width: 45px;
+  height: 45px;
+  font-size: 20px;
+  top: 25px;
+  right: 30px;
+  z-index: 1000;
+  background-color: #444;
+  border: none;
+  border-radius: 50%;
+  padding: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  color: #fff;
+  transition: background-color 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#toggleModeBtn:active {
+  background-color: #f1c70c;
+  color: #121212;
+}
+
+#toggleModeBtn i {
+  font-size: 18px;
+}
+
+/** === INPUT GROUP === */
+.input-group {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+input[type="date"] {
+  padding: 5px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.custom-file-label {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#pdfInput {
+  display: none;
+}
+
+/* File info next to upload button */
+#fileInfo {
+  font-size: 14px;
+  color: #444;
+}
+
+/** === BUTTONS === */
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+button,
+#downloadBtn {
+  background-color: #00c853;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:active,
+#downloadBtn:active {
+  background-color: #00b248;
+}
+
+/** === SPINNER === */
+#loading {
+  margin-top: 10px;
+  display: none;
+  font-weight: bold;
+  color: #333;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #333;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === TABLE HASIL INPUT FORM TANDA TERIMA === */
+#judulHasil {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#previewTable,
+#ttdTable {
+  margin: 0 auto 20px;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+}
+
+#previewTable th,
+#previewTable td,
+#ttdTable th,
+#ttdTable td {
+  border: 1px solid #aaa;
+  padding: 8px 12px;
+  font-size: 11px;
+  text-align: center;
+  background-color: #fff;
+  color: #333;
+}
+
+#ttdTable td {
+  height: 60px;
+}
+
+body.dark-mode .form-box {
+  background-color: #1e1e1e;
+  border-color: #444;
+}
+
+/* INPUT TANGGAL */
+body.dark-mode input[type="date"] {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border-color: #555;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* ICON KALENDER (khusus Chrome) */
+body.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* FILE INFO */
+body.dark-mode #fileInfo {
+  color: #ccc;
+}
+
+/* TOMBOL PROSES & DOWNLOAD */
+body.dark-mode button,
+body.dark-mode #downloadBtn {
+  background-color: #00c853;
+  color: white;
+  border: none;
+}
+
+body.dark-mode button:active,
+body.dark-mode #downloadBtn:active {
+  background-color: #00b248;
+}
+
+/* LOADING */
+body.dark-mode #loading {
+  color: #f5f5f5;
+}
+
+/* SPINNER */
+body.dark-mode .spinner {
+  border: 3px solid #666;
+  border-top: 3px solid #fff;
+}
+
+/* TABEL */
+body.dark-mode #previewTable,
+body.dark-mode #ttdTable {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-color: #777;
+}
+
+body.dark-mode #previewTable th,
+body.dark-mode #previewTable td,
+body.dark-mode #ttdTable th,
+body.dark-mode #ttdTable td {
+  border: 1px solid #999;
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+
+/* BUTTON WRAPPER */
+body.dark-mode .btn-wrapper {
+  background-color: transparent;
+  color: inherit;
+}
+
+/** === MERGE LIST & DOWNLOAD === */
+#fileList {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: justify; 
+  margin: 20px auto;
+  margin-top: auto;
+  max-width: 500px;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  max-height: 250px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* DARK MODE STYLING */
+body.dark-mode #fileList,
+body.dark #fileList {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-color: #555;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+}
+
+#downloadBar {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #e0ffe0;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  display: none;
+}
+
+/** === DROPDOWN CONTAINER === */
+.lokasi-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+select {
+  font-size: 12px;
+  padding: 5px 8px;
+  text-align: left;
+  text-align-last: center;
+  width: 150px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+/* === DESKTOP STYLE === */
+@media (min-width: 768px) {
+  #mainNav {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 60%;
+    margin: 40px auto 10px auto;
+    padding: 10px 0px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(255, 8, 8, 0.05);
+    background-color: #ffffff;
+    justify-content: center;
+    border: 3px solid #ccc;
+  }
+
+  #mainNav a {
+    padding: 10px 16px;
+    font-size: 15px;
+    color: #0077cc;
+    transition: background-color 0.2s ease, border 0.2s ease;
+  }
+
+  #mainNav a:hover {
+    background-color: #0077cc;
+    color: white;
+    border-radius: 10px 30px;
+  }
+
+  #mainNav a.active {
+    background-color: #0077cc;
+    color: white;
+    border-radius: 10px 30px;
+  }
+
+  body.dark-mode #mainNav {
+    background-color: #1e1e1e;
+    border-color: #444;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+  }
+
+  body.dark-mode #mainNav a {
+    color: #f0f0f0;
+  }
+
+  body.dark-mode #mainNav a:hover {
+    background-color: #0077cc;
+  }
+
+  body.dark-mode #mainNav a.active {
+    background-color: #0077cc;
+    color: white;
+  }
+
+  #menuToggle {
+    display: none;
+  }
+
+  #mainNav.hidden {
+    display: flex !important;
+  }
+}
+
+/* === MOBILE STYLE === */
+@media (max-width: 768px) {
+  #mainNav {
+    flex-direction: column;
+    position: fixed;
+    gap: 5px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    top: 75px;
+    left: 30px;
+    right: 35px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    display: none;
+    border: 2px solid #ccc;
+  }
+
+  #mainNav a {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 14px;
+    border-bottom: 2px solid #ccc;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #mainNav.hidden {
+    display: none;
+  }
+
+  #mainNav.show {
+    display: flex;
+  }
+
+  body.dark-mode #mainNav {
+    background-color: #1f1f1f;
+    border-color: #444;
+  }
+
+  body.dark-mode #mainNav a {
+    color: #f0f0f0;
+    border-color: #444;
+  }
+
+  #mainNav a:active {
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    transform: scale(0.96);
+  }
+
+  body.dark-mode #mainNav a:active {
+    background-color: #0077cc;
+    border-radius: 6px;
+    transform: scale(0.96);
+  }
+
+  #menuToggle:active {
+    background-color: #ccc;
+    border-radius: 8px;
+    transform: scale(0.96);
+  }
+  body.dark-mode #menuToggle:active {
+    background-color: #0077cc;
+    border-radius: 8px;
+    transform: scale(0.96);
+  }
+
+  /* Efek sentuhan aktif manual di iOS */
+  #mainNav a.active-touch {
+  background-color: #e0e0e0;
+  transform: scale(0.96);
+  border-radius: 6px;
+  }
+
+  body.dark-mode #mainNav a.active-touch {
+  background-color: #0077cc;
+  color: white;
+  }
+
+  .content-box {
+    padding: 20px 20px;
+    margin: 80px auto;
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 18px;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .upload-label {
+    max-width: 100%;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .lokasi-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  select {
+    max-width: 100%;
+  }
+
+  #output {
+    font-size: 13px;
+    height: 180px;
+    max-width: 100%;
+  }
+
+  #copyBtn {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  input[type="date"] {
+    flex-direction: column;
+  }
+
+ #fileList {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-size: 13px;
+  padding: 10px;
+  text-align: left; /* Lebih alami buat daftar file */
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+  }
+
+ /* Preview & TTD Table di versi HP */
+  #previewTable,
+  #ttdTable {
+    width: 100%;
+    table-layout: fixed; /* Biar bisa atur width tiap kolom */
+  }
+
+  #previewTable th:nth-child(1),
+  #previewTable td:nth-child(1) {
+    width: 10%; /* Kolom No. */
+  }
+
+  #previewTable th:nth-child(2),
+  #previewTable td:nth-child(2) {
+    width: 25%; /* Tanggal Serah Terima */
+  }
+
+  #previewTable th:nth-child(3),
+  #previewTable td:nth-child(3) {
+    width: 45%; /* Nama UKER dibikin lebar */
+  }
+
+  #previewTable th:nth-child(4),
+  #previewTable td:nth-child(4) {
+    width: 25%; /* Tanggal Pekerjaan */
+  }
+
+  #previewTable th,
+  #previewTable td,
+  #ttdTable th,
+  #ttdTable td {
+    font-size: 11px;           /* Kecilkan font biar muat */
+    padding: 4px 4px;
+    word-break: break-word;    /* Biar teks turun baris */
+    white-space: normal;       /* Hindari maksa satu baris */
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  #output, #fileList {
+    font-size: 11px;
+  }
+}

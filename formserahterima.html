@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIBOX KANPUS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+   <!-- Tombol Menu -->
+    <button id="menuToggle"><span class="material-icons">menu</span></button>
+  <!-- Tombol Toggle Dark Mode -->
+    <button id="toggleModeBtn" aria-label="Toggle Dark Mode">
+      <span id="toggleIcon">🌙</span>
+    </button>
+
+  <!-- Navigasi -->
+    <nav id="mainNav">
+      <a href="index.html">Trackmate</a>
+      <a href="appsheet.html">AppSheet</a>
+      <a href="formserahterima.html">Form Tanda Terima</a>
+      <a href="merge.html">Merge PDF</a>
+    </nav>
+
+  <div class="content-box">
+
+    <!-- Judul dan Input -->
+    <h1><span class="material-icons">assignment</span>Form Tanda Terima</h1>
+    <h2>Upload Semua PDF & Tunggu Sampai Proses Selesai !</h2>
+    <div class="input-group">
+      <label for="tanggalSerah">Input Tanggal Serah Terima :</label>
+      <input type="date" id="tanggalSerah">
+    </div>
+
+    
+    <!-- Upload PDF -->
+    <label for="pdfInput" class="upload-label">
+    <span class="material-icons">picture_as_pdf</span> Pilih File PDF
+    </label>
+    <input type="file" id="pdfInput" accept="application/pdf" multiple>
+    <span id="fileInfo" style="display: none;">
+  <i class="fas fa-folder-open" style="margin-right: 4px;"></i> 
+  <span id="fileCountText"></span>
+</span>
+
+
+    <!-- Tombol -->
+    <div class="btn-wrapper">
+      <button onclick="prosesPDF()">Proses</button>
+      <button onclick="downloadPDF()" id="downloadBtn" style="display:none;">Download PDF</button>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading">Memproses file <span class="spinner"></span></div>
+
+    <!-- === HASIL TAMPILAN DALAM BOX === -->
+    <div id="hasilContainer" class="hasil" style="display:none;">
+      <h3 id="judulHasil">FORM TANDA TERIMA CM</h3>
+      
+      <table id="previewTable">
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>TANGGAL SERAH TERIMA</th>
+            <th>NAMA UKER</th>
+            <th>TANGGAL PEKERJAAN</th>
+          </tr>
+        </thead>
+        <tbody id="tabelData"></tbody>
+      </table>
+
+      <table id="ttdTable">
+        <thead>
+          <tr>
+            <th>TTD TEKNISI</th>
+            <th>TTD LEADER</th>
+            <th>TTD CALL CENTER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="height: 60px;"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div> <!-- Penutup content-box -->
+
+  <!-- Dark Mode Toggle Script -->
+ <script>
+  // === Ini wajib di awal, agar iPhone mau tanggapin active ===
+  document.addEventListener("touchstart", () => {}, true);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("toggleModeBtn");
+    const toggleIcon = document.getElementById("toggleIcon");
+    const menuToggle = document.getElementById("menuToggle");
+    const nav = document.getElementById("mainNav");
+    const body = document.body;
+    const navLinks = document.querySelectorAll("#mainNav a");
+    const currentPage = location.pathname.split("/").pop();
+
+    // === Terapkan tema dari localStorage ===
+    if (localStorage.getItem("theme") === "dark") {
+      body.classList.add("dark-mode");
+      toggleIcon.textContent = "🌞";
+    }
+
+    // === Toggle dark/light mode ===
+    toggleBtn.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
+      const isDark = body.classList.contains("dark-mode");
+      toggleIcon.textContent = isDark ? "🌞" : "🌙";
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+
+    // === Toggle menu (mobile) ===
+    menuToggle.addEventListener("click", (e) => {
+      nav.classList.toggle("show");
+      menuToggle.classList.toggle("active");
+      e.stopPropagation(); // Biar gak langsung ketutup karena bubbling
+    });
+
+    // === Tutup menu jika klik di luar nav & tombol toggle
+    document.addEventListener("click", (e) => {
+      if (window.innerWidth < 768 && nav.classList.contains("show")) {
+        if (!nav.contains(e.target) && !menuToggle.contains(e.target)) {
+          nav.classList.remove("show");
+          menuToggle.classList.remove("active");
+        }
+      }
+    });
+
+    // === Tandai link aktif
+    navLinks.forEach(link => {
+      const href = link.getAttribute("href").split("/").pop();
+      if (href === currentPage) {
+        link.classList.add("active");
+      }
+
+      // === Tambahkan efek aktif manual di iOS (touchstart & touchend)
+      link.addEventListener("touchstart", () => {
+        link.classList.add("active-touch");
+      });
+      link.addEventListener("touchend", () => {
+        setTimeout(() => link.classList.remove("active-touch"), 150);
+      });
+    });
+
+    // === Reset nav (khusus mobile) saat pertama load
+    if (window.innerWidth < 768) {
+      nav.classList.remove("show", "hidden");
+      menuToggle.classList.remove("active");
+    }
+
+    // === Hindari kedipan menu saat kembali/back
+    const navType = performance.getEntriesByType("navigation")[0]?.type || performance.navigation.type;
+    if (navType === "back_forward" || navType === 2) {
+      document.documentElement.classList.add("restore-menu-fix");
+    }
+
+    // === Cleanup setelah halaman tampil
+    window.addEventListener("pageshow", () => {
+      document.documentElement.classList.remove("restore-menu-fix");
+      nav.classList.remove("show", "hidden");
+      menuToggle.classList.remove("active");
+    });
+  });
+</script>
+
+
+  <!-- Scripts -->
+  <script src="formserahterima.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</body>
+</html>
