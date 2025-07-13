@@ -113,7 +113,7 @@ function downloadPDF() {
           item.tanggalPekerjaan
         ];
       }),
-      startY: 30,
+      startY: 35,
       styles: {
         fontSize: 7,
         halign: "center",
