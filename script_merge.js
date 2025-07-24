@@ -29,34 +29,46 @@ const mergeBtn = document.getElementById('mergeBtn');
 mergeBtn?.addEventListener('click', async () => {
   const files = Array.from(mergeInput.files);
   const downloadBar = document.getElementById('downloadBar');
+  const loading = document.getElementById('loading'); // Ambil elemen loading
 
   if (!files || files.length < 2) {
     alert("Pilih minimal 2 file PDF untuk digabung.");
     return;
   }
 
-  const mergedPdf = await PDFLib.PDFDocument.create();
+  // Tampilkan loading spinner
+  loading.style.display = 'block';
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-    copiedPages.forEach(page => mergedPdf.addPage(page));
+  try {
+    const mergedPdf = await PDFLib.PDFDocument.create();
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach(page => mergedPdf.addPage(page));
+    }
+
+    const mergedBytes = await mergedPdf.save();
+    const blob = new Blob([mergedBytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Form CM Merge.pdf";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    downloadBar.style.display = 'block';
+    setTimeout(() => { downloadBar.style.display = 'none'; }, 3000);
+  } catch (error) {
+    alert("Terjadi kesalahan saat menggabungkan file PDF.");
+    console.error(error);
+  } finally {
+    // Sembunyikan loading spinner
+    loading.style.display = 'none';
   }
-
-  const mergedBytes = await mergedPdf.save();
-  const blob = new Blob([mergedBytes], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "Form CM Merge.pdf";
-  a.style.display = "none";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  downloadBar.style.display = 'block';
-  setTimeout(() => { downloadBar.style.display = 'none'; }, 3000);
 });

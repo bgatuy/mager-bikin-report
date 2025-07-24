@@ -146,7 +146,7 @@ doc.text("FORM TANDA TERIMA CM", pageWidth / 2, 25, { align: "center" });
 
 
 
-   const yAfter = doc.lastAutoTable.finalY + 10;
+   const yAfter = doc.lastAutoTable.finalY + 5;
 
   doc.autoTable({
   head: [['TTD TEKNISI', 'TTD LEADER', 'TTD CALL CENTER']],
