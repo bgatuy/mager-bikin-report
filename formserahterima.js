@@ -10,16 +10,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const jumlah = fileInput.files.length;
       if (jumlah > 0) {
         fileInfo.style.display = "block";
-document.getElementById("fileCountText").textContent = `${jumlah} file dipilih`;
+        document.getElementById("fileCountText").textContent = `${jumlah} file dipilih`;
       }
     });
   }
 });
 
-
 function formatTanggal(dateStr) {
   const [y, m, d] = dateStr.split("-");
   return `${d}/${m}/${y}`;
+}
+
+function parseTanggalIndonesia(str) {
+  const [d, m, y] = str.split("/");
+  return new Date(`${y}-${m}-${d}`);
 }
 
 async function prosesPDF() {
@@ -61,6 +65,18 @@ async function prosesPDF() {
     });
   }
 
+  // ✅ URUTKAN BERDASARKAN TANGGAL PEKERJAAN
+  hasilData.sort((a, b) => {
+    const tglA = parseTanggalIndonesia(a.tanggalPekerjaan);
+    const tglB = parseTanggalIndonesia(b.tanggalPekerjaan);
+    return tglA - tglB;
+  });
+
+  // ✅ RENUMBERING NO URUT
+  hasilData.forEach((item, index) => {
+    item.no = index + 1;
+  });
+
   tampilkanPreview();
   document.getElementById("downloadBtn").style.display = "inline-block";
   document.getElementById("loading").style.display = "none";
@@ -98,87 +114,84 @@ function downloadPDF() {
   chunks.forEach((chunk, index) => {
     if (index > 0) doc.addPage();
 
-  const pageWidth = doc.internal.pageSize.getWidth();
-doc.setFontSize(25);
-doc.setFont(undefined, "bold");
-doc.text("FORM TANDA TERIMA CM", pageWidth / 2, 25, { align: "center" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    doc.setFontSize(25);
+    doc.setFont(undefined, "bold");
+    doc.text("FORM TANDA TERIMA CM", pageWidth / 2, 25, { align: "center" });
 
+    doc.autoTable({
+      head: [['NO.', 'TANGGAL SERAH TERIMA', 'NAMA UKER', 'TANGGAL PEKERJAAN']],
+      body: chunk.map(() => {
+        const item = hasilData[globalIndex - 1];
+        return [
+          globalIndex++,
+          item.tanggalSerah,
+          item.namaUker,
+          item.tanggalPekerjaan
+        ];
+      }),
+      startY: 35,
+      styles: {
+        fontSize: 7,
+        halign: "center",
+        valign: "middle",
+        lineColor: [0, 0, 0],
+        lineWidth: 0.3,
+        textColor: [0, 0, 0]
+      },
+      headStyles: {
+        fillColor: false,
+        fontSize: 10,
+        fontStyle: "bold"
+      },
+      bodyStyles: {
+        fontSize: 7,
+        textColor: [0, 0, 0],
+        lineColor: [0, 0, 0]
+      },
+      columnStyles: {
+        0: { cellWidth: 10 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 90 },
+        3: { cellWidth: 40 }
+      },
+      theme: "grid",
+      margin: { left: 15, right: 15 }
+    });
 
-  doc.autoTable({
-  head: [['NO.', 'TANGGAL SERAH TERIMA', 'NAMA UKER', 'TANGGAL PEKERJAAN']],
-  body: chunk.map(() => {
-    const item = hasilData[globalIndex - 1];
-    return [
-      globalIndex++,
-      item.tanggalSerah,
-      item.namaUker,
-      item.tanggalPekerjaan
-    ];
-  }),
-  startY: 35,
-  styles: {
-    fontSize: 7,
-    halign: "center",
-    valign: "middle",
-    lineColor: [0, 0, 0],
-    lineWidth: 0.3,
-    textColor: [0, 0, 0]
-  },
-  headStyles: {
-    fillColor: false,
-    fontSize: 10,
-    fontStyle: "bold"
-  },
-  bodyStyles: {
-    fontSize: 7,
-    textColor: [0, 0, 0],
-    lineColor: [0, 0, 0]
-  },
-  columnStyles: {
-    0: { cellWidth: 10 },  // NO
-    1: { cellWidth: 40 },  // TANGGAL SERAH
-    2: { cellWidth: 90 },  // NAMA UKER
-    3: { cellWidth: 40 }   // TANGGAL PEKERJAAN
-  },
-  theme: "grid",
-  margin: { left: 15, right: 15 }  // Tambahkan ini!
-});
+    const yAfter = doc.lastAutoTable.finalY + 5;
 
-
-
-   const yAfter = doc.lastAutoTable.finalY + 5;
-
-  doc.autoTable({
-  head: [['TTD TEKNISI', 'TTD LEADER', 'TTD CALL CENTER']],
-  body: [['', '', '']],
-  startY: yAfter,
-  styles: {
-    fontSize: 10,
-    halign: "center",
-    valign: "middle",
-    lineColor: [0, 0, 0],
-    lineWidth: 0.3,
-    textColor: [0, 0, 0]
-  },
-  headStyles: {
-    fontStyle: "bold",
-    fontSize: 10,
-    textColor: [0, 0, 0],
-    fillColor: false,
-    minCellHeight: 5
-  },
-  bodyStyles: {
-    minCellHeight: 30
-  },
-  columnStyles: {
-    0: { cellWidth: 60 },
-    1: { cellWidth: 60 },
-    2: { cellWidth: 60 }
-  },
-  theme: "grid",
-  margin: { left: 15, right: 15 }  // Sama dengan tabel atas
+    doc.autoTable({
+      head: [['TTD TEKNISI', 'TTD LEADER', 'TTD CALL CENTER']],
+      body: [['', '', '']],
+      startY: yAfter,
+      styles: {
+        fontSize: 10,
+        halign: "center",
+        valign: "middle",
+        lineColor: [0, 0, 0],
+        lineWidth: 0.3,
+        textColor: [0, 0, 0]
+      },
+      headStyles: {
+        fontStyle: "bold",
+        fontSize: 10,
+        textColor: [0, 0, 0],
+        fillColor: false,
+        minCellHeight: 5
+      },
+      bodyStyles: {
+        minCellHeight: 30
+      },
+      columnStyles: {
+        0: { cellWidth: 60 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 60 }
+      },
+      theme: "grid",
+      margin: { left: 15, right: 15 }
+    });
   });
-});
 
   doc.save("FORM TANDA TERIMA CM.pdf");
 }
