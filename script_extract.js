@@ -27,7 +27,13 @@ function extractFlexibleBlock(lines, startLabel, stopLabels = []) {
     if (isStop) break;
     result += ' ' + line;
   }
-  return result.replace(/^:+/, '').replace(/:+$/, '').replace(/^:+\s*/, '').replace(/\s*:+\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  return result
+    .replace(/^:+/, '')
+    .replace(/:+$/, '')
+    .replace(/^:+\s*/, '')
+    .replace(/\s*:+\s*/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 let unitKerja = "-";
@@ -72,13 +78,27 @@ fileInput.addEventListener('change', async function () {
 
     unitKerja = extractFlexibleBlock(lines, 'Unit Kerja', ['Kantor Cabang', 'Tanggal']);
     kantorCabang = extractFlexibleBlock(lines, 'Kantor Cabang', ['Tanggal', 'Pelapor']);
+
     const tanggal = rawText.match(/Tanggal(?:\sTiket)?\s*:\s*(\d{2}\/\d{2}\/\d{4})/)?.[1];
     tanggalFormatted = tanggal ? formatTanggalIndonesia(tanggal) : '';
+
     problem = clean(rawText.match(/Trouble Dilaporkan\s*:\s*(.+)/)?.[1]);
-    berangkat = potongJamMenit(rawText.match(/Berangkat\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
-    tiba = potongJamMenit(rawText.match(/Tiba\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
-    mulai = potongJamMenit(rawText.match(/Mulai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
-    selesai = potongJamMenit(rawText.match(/Selesai\s+(\d{2}:\d{2}:\d{2})/)?.[1]);
+
+    // Jam fleksibel: bisa HH:mm atau HH:mm:ss
+    const jamRegex = /(\d{2}:\d{2}(?::\d{2})?)/;
+
+    // Fungsi ambil jam & menit, abaikan detik
+    const ambilJamMenit = (text, label) => {
+    const match = text.match(new RegExp(`${label}\\s+(\\d{2}:\\d{2})(?::\\d{2})?`));
+    return match ? match[1] : '';
+    };
+
+    berangkat = ambilJamMenit(rawText, 'Berangkat');
+    tiba = ambilJamMenit(rawText, 'Tiba');
+    mulai = ambilJamMenit(rawText, 'Mulai');
+    selesai = ambilJamMenit(rawText, 'Selesai');
+
+
     solusi = clean(rawText.match(/Solusi\/Perbaikan\s*:\s*(.+)/)?.[1]);
     jenisPerangkat = clean(rawText.match(/Jenis Perangkat\s*:\s*(.+)/)?.[1]);
     serial = clean(rawText.match(/SN\s*:\s*(.+)/)?.[1]);
