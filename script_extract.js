@@ -82,7 +82,11 @@ fileInput.addEventListener('change', async function () {
     const tanggal = rawText.match(/Tanggal(?:\sTiket)?\s*:\s*(\d{2}\/\d{2}\/\d{4})/)?.[1];
     tanggalFormatted = tanggal ? formatTanggalIndonesia(tanggal) : '';
 
-    problem = clean(rawText.match(/Trouble Dilaporkan\s*:\s*(.+)/)?.[1]);
+   problem = extractFlexibleBlock(
+  lines,
+  'Trouble Dilaporkan',
+  ['Masalah', 'Solusi', 'Solusi/Perbaikan', 'Progress']
+);
 
     // Jam fleksibel: bisa HH:mm atau HH:mm:ss
     const jamRegex = /(\d{2}:\d{2}(?::\d{2})?)/;
@@ -99,7 +103,11 @@ fileInput.addEventListener('change', async function () {
     selesai = ambilJamMenit(rawText, 'Selesai');
 
 
-    solusi = clean(rawText.match(/Solusi\/Perbaikan\s*:\s*(.+)/)?.[1]);
+    solusi = extractFlexibleBlock(
+  lines,
+  'Solusi/Perbaikan',
+  ['STATUS', 'Jenis Perangkat', 'SN', 'Merk', 'Type']
+);
     jenisPerangkat = clean(rawText.match(/Jenis Perangkat\s*:\s*(.+)/)?.[1]);
     serial = clean(rawText.match(/SN\s*:\s*(.+)/)?.[1]);
     merk = clean(rawText.match(/Merk\s*:\s*(.+)/)?.[1]);
