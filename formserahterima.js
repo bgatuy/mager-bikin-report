@@ -102,7 +102,7 @@ function tampilkanPreview() {
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("p", "mm", "a4");
-  const chunkSize = 25;
+  const chunkSize = 50;
   const chunks = [];
 
   for (let i = 0; i < hasilData.length; i += chunkSize) {
@@ -130,9 +130,11 @@ function downloadPDF() {
           item.tanggalPekerjaan
         ];
       }),
-      startY: 35,
+      startY: 30,
       styles: {
-        fontSize: 7,
+        fontSize: 5,
+        minCellHeight: 4,
+        cellPadding: 0.5,   // ⬅️ ini yang ngatur jarak dalam cell
         halign: "center",
         valign: "middle",
         lineColor: [0, 0, 0],
@@ -141,11 +143,11 @@ function downloadPDF() {
       },
       headStyles: {
         fillColor: false,
-        fontSize: 10,
+        fontSize: 7,
         fontStyle: "bold"
       },
       bodyStyles: {
-        fontSize: 7,
+        fontSize: 5,
         textColor: [0, 0, 0],
         lineColor: [0, 0, 0]
       },
@@ -159,14 +161,14 @@ function downloadPDF() {
       margin: { left: 15, right: 15 }
     });
 
-    const yAfter = doc.lastAutoTable.finalY + 5;
+    const yAfter = doc.lastAutoTable.finalY + 3;
 
     doc.autoTable({
       head: [['TTD TEKNISI', 'TTD LEADER', 'TTD CALL CENTER']],
       body: [['', '', '']],
       startY: yAfter,
       styles: {
-        fontSize: 10,
+        fontSize: 7,
         halign: "center",
         valign: "middle",
         lineColor: [0, 0, 0],
@@ -175,13 +177,13 @@ function downloadPDF() {
       },
       headStyles: {
         fontStyle: "bold",
-        fontSize: 10,
+        fontSize: 7,
         textColor: [0, 0, 0],
         fillColor: false,
         minCellHeight: 5
       },
       bodyStyles: {
-        minCellHeight: 30
+        minCellHeight: 25
       },
       columnStyles: {
         0: { cellWidth: 60 },
@@ -195,3 +197,4 @@ function downloadPDF() {
 
   doc.save("FORM TANDA TERIMA CM.pdf");
 }
+
